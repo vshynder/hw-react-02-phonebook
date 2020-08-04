@@ -5,6 +5,8 @@ import ContactForm from "./components/ContactForm";
 import ContactList from "./components/ContactList";
 import "./app.css";
 
+const LS_KEY = "react-hw-3";
+
 class App extends React.Component {
   state = {
     contacts: [],
@@ -18,6 +20,7 @@ class App extends React.Component {
     this.setState({
       contacts: newContacts,
     });
+    this.addToLocalStorage(newContacts);
   };
 
   handleChange = (e) => {
@@ -31,22 +34,38 @@ class App extends React.Component {
       alert("Name and number must be provided");
       return;
     }
-    const check = this.state.contacts.filter(
-      (contact) => contact.name === name
-    );
-    check.length
+    const check = this.state.contacts.find((contact) => contact.name === name);
+    check
       ? alert(`${name} is already in contacts`)
-      : this.setState({
-          contacts: [
-            ...this.state.contacts,
-            {
-              name,
-              number,
-              id: shortid.generate(),
-            },
-          ],
-        });
+      : this.setState(
+          {
+            contacts: [
+              ...this.state.contacts,
+              {
+                name,
+                number,
+                id: shortid.generate(),
+              },
+            ],
+          },
+          () => {
+            this.addToLocalStorage(this.state.contacts);
+          }
+        );
   };
+
+  addToLocalStorage(item) {
+    localStorage.setItem(LS_KEY, JSON.stringify(item));
+  }
+
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem(LS_KEY));
+    if (contacts) {
+      this.setState({
+        contacts: [...contacts],
+      });
+    }
+  }
 
   render() {
     return (
