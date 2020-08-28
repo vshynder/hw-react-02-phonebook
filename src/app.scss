@@ -1,0 +1,238 @@
+// input {
+//     display: block;
+//     margin-bottom: 20px;
+// }
+
+// button {
+//     border: none;
+//     background-color: #fff;
+//     box-shadow: 2px 2px 2px #ebebeb;
+
+//     outline: none;
+// }
+
+// li:not(:last-child) {
+//     margin-bottom: 10px;
+// }
+
+// li button {
+//     margin-left: 10px;
+// }
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 18px;
+}
+
+.phonebook {
+  width: 500px;
+  margin: 50px auto 0;
+}
+
+.title {
+  color: #0808b4;
+  font-size: 40px;
+  position: absolute;
+  left: -700px;
+  top: 0;
+  &-enter {
+    left: -700px;
+  }
+  &-enter-active {
+    left: 20px;
+    transition: left 500ms;
+  }
+  &-enter-done {
+    top: 0;
+    left: 20px;
+  }
+}
+
+.form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 2px 2px 6px #979797;
+  border-radius: 3px;
+  padding: 10px;
+  &__name {
+    width: 100%;
+    &--input {
+      display: block;
+      width: 100%;
+      height: 36px;
+      border: 1px solid #ebebeb;
+      border-radius: 3px;
+      padding: 0 5px;
+
+      &::focus {
+        border: 1px solid #0808b4;
+      }
+    }
+  }
+
+  &__number {
+    width: 100%;
+    margin-top: 10px;
+
+    &--input {
+      display: block;
+      width: 100%;
+      height: 36px;
+      border: 1px solid #ebebeb;
+      border-radius: 3px;
+      padding: 0 5px;
+      &::focus {
+        border: 1px solid #0808b4;
+      }
+    }
+  }
+
+  &__submit {
+    background: #0808b4;
+    color: white;
+    width: 100%;
+    border: none;
+    height: 32px;
+    margin-top: 20px;
+    border-radius: 3px;
+  }
+}
+
+.filter {
+  margin: 20px 0;
+  width: 100%;
+  box-shadow: 2px 2px 6px #979797;
+  border-radius: 3px;
+  padding: 10px;
+  &__input {
+    display: block;
+    width: 100%;
+    height: 36px;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    padding: 0 5px;
+
+    &::focus {
+      border: 1px solid #0808b4;
+    }
+  }
+}
+
+.contact-list {
+  list-style: none;
+  margin-top: 20px;
+
+  &__item {
+    border: 1px solid #ebebeb;
+    padding: 15px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 1px 1px 2px #bbbbbb;
+    margin: 4px 0;
+
+    &--cont {
+      display: flex;
+      width: 60%;
+      justify-content: space-between;
+      transition: 0.25s;
+    }
+
+    &-enter {
+      width: 0;
+      &-active {
+        width: 100%;
+        transition: 0.25s;
+      }
+    }
+
+    &-exit {
+      width: 100%;
+      &-active {
+        width: 0;
+        transition: 0.25s;
+      }
+    }
+  }
+
+  &__remove {
+    width: 30px;
+    height: 30px;
+    background: red;
+    border: none;
+    position: relative;
+    padding: 0;
+    border-radius: 5px;
+    transition: 0.3s;
+    cursor: pointer;
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 14px;
+      top: 2px;
+      width: 2px;
+      height: 26px;
+      background-color: white;
+      transform: rotate(45deg);
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 14px;
+      top: 2px;
+      width: 2px;
+      height: 26px;
+      background-color: white;
+      transform: rotate(-45deg);
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+  }
+}
+
+.contact-list__remove:hover.contact-list__remove::before {
+  transform: rotate(225deg) scale(1.2);
+}
+.contact-list__remove:hover.contact-list__remove::after {
+  transform: rotate(135deg) scale(1.2);
+}
+
+.contact-list__item-enter.contact-list__item--cont {
+  opacity: 0;
+}
+
+.contact-list__item-enter-done {
+  opacity: 1;
+}
+
+.alert {
+  position: absolute;
+  top: 30px;
+  right: -400px;
+  width: 300px;
+  min-height: 40px;
+  background-color: red;
+  border-radius: 5px;
+  opacity: 0.8;
+  color: white;
+  text-align: center;
+  line-height: 40px;
+  &-enter {
+    right: -400px;
+    &-active {
+      right: 20px;
+      transition: 0.25s;
+    }
+    &-done {
+      right: 20px;
+    }
+  }
+}

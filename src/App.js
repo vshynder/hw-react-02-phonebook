@@ -3,7 +3,10 @@ import shortid from "shortid";
 import Filter from "./components/Filter";
 import ContactForm from "./components/ContactForm";
 import ContactList from "./components/ContactList";
-import "./app.css";
+import Alert from "./components/Alert";
+import "./app.scss";
+
+import { CSSTransition } from "react-transition-group";
 
 const LS_KEY = "react-hw-3";
 
@@ -11,6 +14,9 @@ class App extends React.Component {
   state = {
     contacts: [],
     filter: "",
+    isMounted: false,
+    isAlertShown: false,
+    alertMessage: "",
   };
 
   removeContact = (id) => {
@@ -31,12 +37,12 @@ class App extends React.Component {
 
   handleSubmit = ({ name, number }) => {
     if (name.trim() === "" || number.trim() === "") {
-      alert("Name and number must be provided");
+      this.handleAlert("Name and number must be provided.");
       return;
     }
     const check = this.state.contacts.find((contact) => contact.name === name);
     check
-      ? alert(`${name} is already in contacts`)
+      ? this.handleAlert("You already have " + name)
       : this.setState(
           {
             contacts: [
@@ -54,6 +60,13 @@ class App extends React.Component {
         );
   };
 
+  handleAlert(message) {
+    this.setState({ isAlertShown: true, alertMessage: message });
+    setTimeout(() => {
+      this.setState({ isAlertShown: false });
+    }, 3000);
+  }
+
   addToLocalStorage(item) {
     localStorage.setItem(LS_KEY, JSON.stringify(item));
   }
@@ -65,22 +78,36 @@ class App extends React.Component {
         contacts: [...contacts],
       });
     }
+    this.setState({ isMounted: true });
   }
 
   render() {
     return (
-      <div>
-        <h2>Phonebook</h2>
+      <div className="phonebook">
+        <CSSTransition
+          in={this.state.isMounted}
+          timeout={500}
+          classNames="title"
+          mountOnEnter
+        >
+          <h2 className="title">Phonebook</h2>
+        </CSSTransition>
         <ContactForm formSubmit={this.handleSubmit} />
-        <h2>Contacts</h2>
-        <Filter
-          filterChange={this.handleChange}
-          filterVal={this.state.filter}
-        />
+        {this.state.contacts.length > 1 ? (
+          <Filter
+            filterChange={this.handleChange}
+            filterVal={this.state.filter}
+          />
+        ) : null}
+
         <ContactList
           filter={this.state.filter}
           contacts={this.state.contacts}
           remove={this.removeContact}
+        />
+        <Alert
+          isShown={this.state.isAlertShown}
+          info={this.state.alertMessage}
         />
       </div>
     );
